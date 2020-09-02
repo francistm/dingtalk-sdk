@@ -3,8 +3,33 @@ require 'base64'
 require 'openssl'
 require "dingtalk/version"
 
+require "dingtalk/auth"
+require "dingtalk/access_token"
+
 module Dingtalk
   class Error < StandardError
+  end
+
+  class Signature
+    def initialize(s)
+      @signature = s
+    end
+
+    def to_s
+      @signature
+    end
+
+    def url_encoded
+      URI.encode_www_form_component @signature
+    end
+  end
+
+  class Request
+    include Auth
+
+    def initialize(app_key:, app_secret:)
+      @app_key, @app_secret = app_key, app_secret
+    end
   end
 
   class << self
@@ -29,12 +54,7 @@ module Dingtalk
       signature_str = OpenSSL::HMAC.digest("SHA256", app_secret, timestamp.to_s)
       signature_str_base64 = Base64.encode64(signature_str).strip
 
-      if options[:url_encode]
-        # 不知道为什么 URI.encode 方法不行
-        return URI.encode_www_form_component(signature_str_base64)
-      end
-
-      signature_str_base64
+      Signature.new(signature_str_base64)
     end
   end
 end
