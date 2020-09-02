@@ -1,6 +1,7 @@
+require "pry"
 require "bundler/setup"
+require "webmock/rspec"
 require "dingtalk"
-require "webmock"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

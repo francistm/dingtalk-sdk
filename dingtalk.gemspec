@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["francis.tm@gmail.com"]
 
   spec.summary       = %q{Dingtalk integration}
-  spec.description   = %q{Dingtalk server api SKD}
+  spec.description   = %q{Dingtalk ruby SKD}
   spec.homepage      = "http://github.com"
   spec.license       = "MIT"
 
@@ -36,6 +36,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency     "httparty", "~> 0.18"
+  spec.add_runtime_dependency     "activesupport", "~> 5.0"
+
+  spec.add_development_dependency "pry", "~> 0.13"
   spec.add_development_dependency "webmock", "~> 3.8"
   spec.add_development_dependency "bundler", "~> 1.17"
   spec.add_development_dependency "rake", "~> 10.0"

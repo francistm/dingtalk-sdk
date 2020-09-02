@@ -1,3 +1,5 @@
+require "dingtalk/config"
+
 RSpec.describe Dingtalk::Config do
   before :each do
     @app_key = "ci_dingtalk_app_key"
