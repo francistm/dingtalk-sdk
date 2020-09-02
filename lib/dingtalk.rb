@@ -26,6 +26,9 @@ module Dingtalk
 
   class Request
     include Auth
+    include AccessToken
+
+    attr_reader :app_key, :app_secret
 
     def initialize(app_key:, app_secret:)
       @app_key, @app_secret = app_key, app_secret

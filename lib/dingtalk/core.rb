@@ -8,7 +8,7 @@ require "dingtalk"
 module Dingtalk
   module Core
     class RequestBuilder
-      attr_reader :query_args, :body_args, :required_args
+      attr_reader :query_args, :body_args, :query_const, :body_const, :required_args
 
       def initialize
         @is_json = false
@@ -16,7 +16,9 @@ module Dingtalk
         @body_args = []
         @query_args = []
         @required_args = []
-        @with_key_and_secret = false
+
+        @body_const = {}
+        @query_const = {}
       end
 
       def is_json?
@@ -27,12 +29,20 @@ module Dingtalk
         @required_args.include? arg_name
       end
 
-      def has_body_args?
-        !@body_args.empty?
+      def has_body?
+        !@body_args.empty? || !@body_const.empty?
       end
 
-      def has_query_args?
-        !@query_args.empty?
+      def has_query?
+        !@query_args.empty? || !@query_const.empty?
+      end
+
+      def has_body_const?
+        !@body_const.empty?
+      end
+
+      def has_query_const?
+        !@query_const.empty?
       end
 
       def is_json=(b)
@@ -46,10 +56,23 @@ module Dingtalk
         when :query
           @query_args << arg_name
         else
-          raise Dingtalk::Error.new("unknown argument position")
+          raise Dingtalk::Error.new("unknown argument '#{arg_name}' position")
         end
 
         @required_args << arg_name if option[:required]
+      end
+
+      def add_const(arg_name, value, option)
+        const_hash = {arg_name => value}
+
+        case option[:in]
+        when :body
+          @body_const.merge! const_hash
+        when :query
+          @query_const.merge! const_hash
+        else
+          raise Dingtalk::Error.new("unknown argument '#{arg_name}' position")
+        end
       end
     end
 
@@ -64,20 +87,25 @@ module Dingtalk
               if method_args[arg].nil?
           end
 
-          h[:body] = {} if builder.has_body_args?
-          h[:query] = {} if builder.has_query_args?
+          [:body, :query].each do |arg_pos|
+            h[arg_pos] = {} if builder.send(:"has_#{arg_pos}?")
 
-          builder.body_args.each do |arg|
-            h[:body][arg] = method_args[arg]
-          end
+            builder.send(:"#{arg_pos}_args").each do |arg|
+              h[arg_pos][arg] = method_args[arg]
+            end
 
-          builder.query_args.each do |arg|
-            h[:query][arg] = method_args[arg] unless method_args[arg].nil?
+            builder.send(:"#{arg_pos}_const").each do |arg_name, arg_value|
+              if arg_value.respond_to?(:call)
+                h[arg_pos][arg_name] = arg_value.call(self)
+              else
+                h[arg_pos][arg_name] = arg_value
+              end
+            end
           end
 
           if builder.is_json?
-            h[:body] = h[:body].to_json
-            h[:headers] = {:"Content-Type" => "application/json"} if builder.is_json?
+            h[:body] = h[:body].to_json if Hash === h[:body]
+            h[:headers] = {:"Content-Type" => "application/json"}
           end
         end
 
