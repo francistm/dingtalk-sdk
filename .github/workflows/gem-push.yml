@@ -1,10 +1,10 @@
 name: Ruby Gem
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Ruby"]
+    types:
+      - completed  
 
 jobs:
   build:
