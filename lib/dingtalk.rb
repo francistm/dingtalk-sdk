@@ -34,10 +34,10 @@ module Dingtalk
     include AccessToken
     include CorpConversation
 
-    attr_reader :app_key, :app_secret
+    attr_reader :agent_id, :app_key, :app_secret
 
-    def initialize(app_key:, app_secret:)
-      @app_key, @app_secret = app_key, app_secret
+    def initialize(agent_id:, app_key:, app_secret:)
+      @agent_id, @app_key, @app_secret = agent_id, app_key, app_secret
     end
   end
 
