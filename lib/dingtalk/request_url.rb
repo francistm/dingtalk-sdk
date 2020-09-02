@@ -16,5 +16,17 @@ module Dingtalk
     # 服务端通过临时授权码获取授权用户的个人信息
     # @url https://ding-doc.dingtalk.com/doc#/serverapi2/etaarr
     GET_USER_INFO_SNS = "https://oapi.dingtalk.com/sns/getuserinfo_bycode"
+
+    # 获取用户详情
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/AaRQe
+    GET_USER_PROFILE = "https://oapi.dingtalk.com/user/get"
+
+    # 通过 unionId 获取 userId
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/602f4b15
+    GET_USERID_FROM_UNIONID = "https://oapi.dingtalk.com/user/getUseridByUnionid"
+
+    # 根据手机号获取 userId
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/soV11
+    GET_USERID_FROM_MOBILE = "https://oapi.dingtalk.com/user/get_by_mobile"
   end
 end

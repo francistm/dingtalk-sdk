@@ -90,8 +90,10 @@ module Dingtalk
           [:body, :query].each do |arg_pos|
             h[arg_pos] = {} if builder.send(:"has_#{arg_pos}?")
 
-            builder.send(:"#{arg_pos}_args").each do |arg|
-              h[arg_pos][arg] = method_args[arg]
+            builder.send(:"#{arg_pos}_args").each do |arg_name|
+              arg_value = method_args[arg_name]
+              next if arg_pos == :query && arg_value.nil?
+              h[arg_pos][arg_name] = arg_value
             end
 
             builder.send(:"#{arg_pos}_const").each do |arg_name, arg_value|
