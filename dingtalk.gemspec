@@ -37,11 +37,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency     "httparty", "~> 0.18"
-  spec.add_runtime_dependency     "activesupport", "~> 5.0"
+  spec.add_runtime_dependency     "activesupport", "~> 6.0"
 
   spec.add_development_dependency "pry", "~> 0.13"
   spec.add_development_dependency "webmock", "~> 3.8"
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler", "~> 2.1.0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
 end
