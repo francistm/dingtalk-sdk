@@ -28,5 +28,33 @@ module Dingtalk
     # 根据手机号获取 userId
     # @url https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/soV11
     GET_USERID_FROM_MOBILE = "https://oapi.dingtalk.com/user/get_by_mobile"
+
+    # 获取部门列表
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/dubakq/e6e1604e
+    GET_DEPARTMENT_LIST = "https://oapi.dingtalk.com/department/list"
+
+    # 获取部门详情
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/dubakq/5bf960de
+    GET_DEPARTMENT_PROFILE = "https://oapi.dingtalk.com/department/get"
+
+    # 发送工作通知消息
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy
+    SEND_CORP_CONVERSATION = "https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2"
+
+    # 查询工作通知消息的发送进度
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/e2262dad
+    CORP_CONVERSATION_SEND_PROGRESS = "https://oapi.dingtalk.com/topapi/message/corpconversation/getsendprogress"
+
+    # 查询工作通知消息的发送结果
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/a5920210
+    CORP_CONVERSATION_SEND_RESULT = "https://oapi.dingtalk.com/topapi/message/corpconversation/getsendresult"
+
+    # 工作通知消息撤回
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/hYyV8
+    RECALL_CORP_CONVERSATION = "https://oapi.dingtalk.com/topapi/message/corpconversation/recall"
+
+    # 上传媒体文件
+    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/bcmg0i/08d5a73b
+    UPLOAD_MEDIA_FILE = "https://oapi.dingtalk.com/media/upload"
   end
 end

@@ -30,7 +30,7 @@ module Dingtalk
     # 钉钉内免登录第三方网站 个人信息获取
     # @url https://ding-doc.dingtalk.com/doc#/serverapi2/etaarr
     add_request :get_3rd_login_free_user_profile, :post, Dingtalk::RequestUrl::GET_USER_INFO_SNS do |request|
-      request.is_json = true
+      request.format = :json
 
       request.add_arg :accessKey, required: true, in: :query
       request.add_arg :timestamp, required: true, in: :query

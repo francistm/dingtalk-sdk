@@ -11,7 +11,7 @@ module Dingtalk
       attr_reader :query_args, :body_args, :query_const, :body_const, :required_args
 
       def initialize
-        @is_json = false
+        @format = nil
 
         @body_args = []
         @query_args = []
@@ -22,7 +22,15 @@ module Dingtalk
       end
 
       def is_json?
-        @is_json
+        @format == :json
+      end
+
+      def is_x_form?
+        @format == :x_form
+      end
+
+      def is_form_data?
+        @format == :form_data
       end
 
       def is_arg_required?(arg_name)
@@ -45,8 +53,8 @@ module Dingtalk
         !@query_const.empty?
       end
 
-      def is_json=(b)
-        @is_json = b
+      def format=(format)
+        @format = format
       end
 
       def add_arg(arg_name, option)
@@ -105,7 +113,9 @@ module Dingtalk
             end
           end
 
-          if builder.is_json?
+          if builder.is_form_data?
+            h[:multipart] = true
+          elsif builder.is_json?
             h[:body] = h[:body].to_json if Hash === h[:body]
             h[:headers] = {:"Content-Type" => "application/json"}
           end

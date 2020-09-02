@@ -4,7 +4,10 @@ require 'openssl'
 require "dingtalk/version"
 
 require "dingtalk/auth"
+require "dingtalk/user"
+require "dingtalk/department"
 require "dingtalk/access_token"
+require "dingtalk/corp_conversation"
 
 module Dingtalk
   class Error < StandardError
@@ -26,7 +29,10 @@ module Dingtalk
 
   class Request
     include Auth
+    include User
+    include Department
     include AccessToken
+    include CorpConversation
 
     attr_reader :app_key, :app_secret
 
