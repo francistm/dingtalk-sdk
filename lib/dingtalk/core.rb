@@ -4,7 +4,6 @@ require "active_support"
 require "active_support/core_ext/hash/keys"
 require "active_support/core_ext/hash/deep_merge"
 require "dingtalk"
-require "dingtalk/config"
 
 module Dingtalk
   module Core
@@ -16,14 +15,6 @@ module Dingtalk
         @payload_args = []
         @required_args = []
         @with_key_and_secret = false
-      end
-
-      def with_key_and_secret!
-        @with_key_and_secret = true
-      end
-
-      def with_key_and_secret?
-        @with_key_and_secret
       end
 
       def is_arg_required?(arg_name)
@@ -44,8 +35,6 @@ module Dingtalk
       end
     end
 
-    # options
-    #  with_key_secret 是否携带 appkey, appsecret 在请求 query 中
     def add_request(request_name, method, url)
       builder = RequestBuilder.new
       yield builder if block_given?
@@ -56,13 +45,6 @@ module Dingtalk
         }
 
         request_options = default_options.tap do |h|
-          if builder.with_key_and_secret?
-            h[:query].merge!({
-              appkey: Dingtalk::Config.app_key,
-              appsecret: Dingtalk::Config.app_secret,
-            })
-          end
-
           builder.required_args.each do |arg|
             raise Dingtalk::Error.new("missing required argument '#{arg}' when invoke request #{request_name}") \
               if method_args[arg].nil?
@@ -73,6 +55,7 @@ module Dingtalk
           end
 
           builder.payload_args.each do |arg|
+            h[:body][arg] = method_args[arg]
           end
         end
 

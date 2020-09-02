@@ -18,8 +18,8 @@ RSpec.describe Dingtalk::Auth do
       .to_return(status: 200, body: response_body.to_json)
   end
 
-  it 'should get internal app user id' do
-    response = Dingtalk::Auth.get_int_user_id code: @int_login_code, access_token: @access_token
+  it 'should get internal app user id in login-free scenario' do
+    response = Dingtalk::Auth.get_int_login_free_user_id code: @int_login_code, access_token: @access_token
 
     expect(response[:userid]).to eq(@int_user_id)
     expect(response[:is_sys]).to eq(false)

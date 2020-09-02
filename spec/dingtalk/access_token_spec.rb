@@ -7,9 +7,6 @@ RSpec.describe Dingtalk::AccessToken do
     @app_secret = "mocked_app_secret"
     @mocked_access_token = "mocked_access_token"
 
-    Dingtalk::Config.app_key = @app_key
-    Dingtalk::Config.app_secret = @app_secret
-
     response_body = {}.tap do |h|
       h[:errcode] = 0
       h[:errmsg] = 0
@@ -22,7 +19,7 @@ RSpec.describe Dingtalk::AccessToken do
   end
 
   it "should return correct access_token from request" do
-    response = Dingtalk::AccessToken.get_access_token
+    response = Dingtalk::AccessToken.get_access_token appkey: @app_key, appsecret: @app_secret
 
     expect(response[:access_token]).to eq(@mocked_access_token)
   end
