@@ -6,7 +6,7 @@ module Dingtalk
     extend Dingtalk::Core
 
     # 上传媒体文件
-    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/bcmg0i/08d5a73b
+    # {https://ding-doc.dingtalk.com/doc#/serverapi2/bcmg0i/08d5a73b}
     add_request :upload_media, :post, Dingtalk::RequestUrl::UPLOAD_MEDIA_FILE do |request|
       request.add_arg :type, in: query, required: true
       request.add_arg :access_token, in: :query, required: true

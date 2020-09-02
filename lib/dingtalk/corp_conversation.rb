@@ -6,7 +6,7 @@ module Dingtalk
     extend Dingtalk::Core
 
     # 发送工作通知消息
-    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy
+    # {https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy}
     add_request :send_corp_conversation, :post, SEND_CORP_CONVERSATION do |request|
       request.add_arg :agent_id, in: :body, required: true
       request.add_arg :userid_list, in: :body
@@ -18,7 +18,7 @@ module Dingtalk
     end
 
     # 查询工作通知消息的发送进度
-    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/e2262dad
+    # {https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/e2262dad}
     add_request :get_corp_conversation_progress, :post, CORP_CONVERSATION_SEND_PROGRESS do |request|
       request.add_arg :agent_id, in: :body, required: true
       request.add_arg :task_id, in: :body, required: true
@@ -27,7 +27,7 @@ module Dingtalk
     end
 
     # 查询工作通知消息的发送结果
-    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/a5920210
+    # {https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/a5920210}
     add_request :get_corp_conversation_result, :post, CORP_CONVERSATION_SEND_RESULT do |request|
       request.add_arg :agent_id, in: :body, required: true
       request.add_arg :task_id, in: :body, required: true
@@ -36,7 +36,7 @@ module Dingtalk
     end
 
     # 工作通知消息撤回
-    # @url https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/hYyV8
+    # {https://ding-doc.dingtalk.com/doc#/serverapi2/pgoxpy/hYyV8}
     add_request :recall_corp_conversation, :post, RECALL_CORP_CONVERSATION do |request|
       request.add_arg :agent_id, in: :body, required: true
       request.add_arg :msg_task_id, in: :body, required: true

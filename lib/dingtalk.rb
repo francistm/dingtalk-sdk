@@ -43,7 +43,7 @@ module Dingtalk
 
   class << self
     # 个人免登录场景的签名计算
-    # @url https://ding-doc.dingtalk.com/doc#/faquestions/hxs5v9
+    # {https://ding-doc.dingtalk.com/doc#/faquestions/hxs5v9}
     # timestamp 用于计算的时间戳 如果不提供，表示当前时间
     # url_encode 是否对最终结果进行 rfc2396 转义
     def login_free_signature(app_secret, options = {})
