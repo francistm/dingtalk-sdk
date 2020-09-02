@@ -8,6 +8,7 @@ require "dingtalk/auth"
 
 RSpec.describe Dingtalk::Auth do
   before :each do
+    @agent_id = "mocked_agent_id"
     @app_key = "mocked_app_key"
     @app_secret = "mocked_app_secret"
 
@@ -18,7 +19,11 @@ RSpec.describe Dingtalk::Auth do
 
     @signature = Dingtalk.login_free_signature(@app_secret, timestamp: @timestamp)
 
-    @dingtalk_request = Dingtalk::Request.new(app_key: @app_key, app_secret: @app_secret)
+    @dingtalk_request = Dingtalk::Request.new(
+      agent_id: @agent_id,
+      app_key: @app_key,
+      app_secret: @app_secret,
+    )
 
     # 企业内部免登 响应结果
     get_user_info_response_body = {}.tap do |h|

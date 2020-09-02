@@ -4,11 +4,16 @@ require "dingtalk/access_token"
 
 RSpec.describe Dingtalk::AccessToken do
   before :each do
+    @agent_id = "mocked_agent_id"
     @app_key = "mocked_app_key"
     @app_secret = "mocked_app_secret"
     @mocked_access_token = "mocked_access_token"
 
-    @dingtalk_request = Dingtalk::Request.new(app_key: @app_key, app_secret: @app_secret)
+    @dingtalk_request = Dingtalk::Request.new(
+      agent_id: @agent_id,
+      app_key: @app_key,
+      app_secret: @app_secret,
+    )
 
     response_body = {}.tap do |h|
       h[:errcode] = 0
