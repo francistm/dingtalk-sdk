@@ -27,6 +27,8 @@ RSpec.describe Dingtalk::Auth do
 
     # 企业内部免登 响应结果
     get_user_info_response_body = {}.tap do |h|
+      h[:errcode] = 0
+      h[:errmsg] = "ok"
       h[:userid] = @int_user_id
       h[:is_sys] = false
       h[:sys_level] = 0

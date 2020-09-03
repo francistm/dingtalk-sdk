@@ -10,7 +10,14 @@ require "dingtalk/access_token"
 require "dingtalk/corp_conversation"
 
 module Dingtalk
-  class Error < StandardError
+  class Error < StandardError; end
+
+  class RequestFailedError < Error
+    attr_reader :code, :message
+
+    def initialize(code:, message:)
+      @code, @message, = code, message
+    end
   end
 
   class Signature

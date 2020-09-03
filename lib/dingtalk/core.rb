@@ -122,8 +122,16 @@ module Dingtalk
         end
 
         response = HTTParty.send(method, url, **request_options)
+        symbolized_response = JSON.parse(response.body).deep_symbolize_keys
 
-        JSON.parse(response.body).deep_symbolize_keys
+        if symbolized_response[:errcode] != 0
+          raise Dingtalk::RequestFailedError.new(
+            code: symbolized_response[:errcode],
+            message: symbolized_response[:errmsg],
+          )
+        end
+
+        symbolized_response
       end
     end
   end
