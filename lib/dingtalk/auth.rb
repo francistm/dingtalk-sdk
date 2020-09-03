@@ -8,6 +8,8 @@ module Dingtalk
 
     # 企业内部应用免登录 用户ID获取
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/clotub}
+    # @!method get_int_login_free_user_id(:code, :access_token)
+    # @return [Hash]
     add_request :get_int_login_free_user_id, :get, Dingtalk::RequestUrl::INT_LOGIN_FREE_GET_USER_INFO do |request|
       request.add_arg :code, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
@@ -29,6 +31,8 @@ module Dingtalk
 
     # 钉钉内免登录第三方网站 个人信息获取
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/etaarr}
+    # @!method get_3rd_login_free_user_profile(accessKey:, timestamp:, signature:, tmp_auth_code:)
+    # @return [Hash]
     add_request :get_3rd_login_free_user_profile, :post, Dingtalk::RequestUrl::GET_USER_INFO_SNS do |request|
       request.format = :json
 
