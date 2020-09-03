@@ -1,15 +1,15 @@
 require "json"
-require "dingtalk"
-require "dingtalk/access_token"
+require "dingtalk_sdk"
+require "dingtalk_sdk/access_token"
 
-RSpec.describe Dingtalk::AccessToken do
+RSpec.describe DingtalkSdk::AccessToken do
   before :each do
     @agent_id = "mocked_agent_id"
     @app_key = "mocked_app_key"
     @app_secret = "mocked_app_secret"
     @mocked_access_token = "mocked_access_token"
 
-    @dingtalk_request = Dingtalk::Request.new(
+    @dingtalk_request = DingtalkSdk::Request.new(
       agent_id: @agent_id,
       app_key: @app_key,
       app_secret: @app_secret,

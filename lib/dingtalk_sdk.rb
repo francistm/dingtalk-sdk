@@ -1,15 +1,15 @@
 require 'uri'
 require 'base64'
 require 'openssl'
-require "dingtalk/version"
 
-require "dingtalk/auth"
-require "dingtalk/user"
-require "dingtalk/department"
-require "dingtalk/access_token"
-require "dingtalk/corp_conversation"
+require "dingtalk_sdk/version"
+require "dingtalk_sdk/auth"
+require "dingtalk_sdk/user"
+require "dingtalk_sdk/department"
+require "dingtalk_sdk/access_token"
+require "dingtalk_sdk/corp_conversation"
 
-module Dingtalk
+module DingtalkSdk
   class Error < StandardError; end
 
   class RequestFailedError < Error

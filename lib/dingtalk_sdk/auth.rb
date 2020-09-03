@@ -1,16 +1,16 @@
-require "dingtalk/core"
-require "dingtalk/request_url"
+require "dingtalk_sdk/core"
+require "dingtalk_sdk/request_url"
 require "active_support/core_ext/object/to_query"
 
-module Dingtalk
+module DingtalkSdk
   module Auth
-    extend Dingtalk::Core
+    extend DingtalkSdk::Core
 
     # 企业内部应用免登录 用户ID获取
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/clotub}
     # @!method get_int_login_free_user_id(code:, access_token:)
     # @return [Hash]
-    add_request :get_int_login_free_user_id, :get, Dingtalk::RequestUrl::INT_LOGIN_FREE_GET_USER_INFO do |request|
+    add_request :get_int_login_free_user_id, :get, DingtalkSdk::RequestUrl::INT_LOGIN_FREE_GET_USER_INFO do |request|
       request.add_arg :code, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
     end
@@ -26,14 +26,14 @@ module Dingtalk
         h[:redirect_uri] = redirect_uri
       end
 
-      "#{Dingtalk::RequestUrl::CONNECT_QR_REDIRECT}?#{qs.to_query}"
+      "#{DingtalkSdk::RequestUrl::CONNECT_QR_REDIRECT}?#{qs.to_query}"
     end
 
     # 钉钉内免登录第三方网站 个人信息获取
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/etaarr}
     # @!method get_3rd_login_free_user_profile(accessKey:, timestamp:, signature:, tmp_auth_code:)
     # @return [Hash]
-    add_request :get_3rd_login_free_user_profile, :post, Dingtalk::RequestUrl::GET_USER_INFO_SNS do |request|
+    add_request :get_3rd_login_free_user_profile, :post, DingtalkSdk::RequestUrl::GET_USER_INFO_SNS do |request|
       request.format = :json
 
       request.add_arg :accessKey, required: true, in: :query

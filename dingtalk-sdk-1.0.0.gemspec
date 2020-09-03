@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "dingtalk/version"
+require "dingtalk_sdk/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "dingtalk-sdk"
-  spec.version       = Dingtalk::VERSION
+  spec.name          = "dingtalk_sdk"
+  spec.version       = DingtalkSdk::VERSION
   spec.authors       = ["francis"]
   spec.email         = ["francis.tm@gmail.com"]
 

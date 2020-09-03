@@ -1,15 +1,15 @@
-require "dingtalk/core"
-require "dingtalk/request_url"
+require "dingtalk_sdk/core"
+require "dingtalk_sdk/request_url"
 
-module Dingtalk
+module DingtalkSdk
   module User
-    extend Dingtalk::Core
+    extend DingtalkSdk::Core
 
     # 获取用户详情
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/AaRQe}
     # @!method get_user_profile(userid:, access_token:)
     # @return [Hash]
-    add_request :get_user_profile, :get, Dingtalk::RequestUrl::GET_USER_PROFILE do |request|
+    add_request :get_user_profile, :get, DingtalkSdk::RequestUrl::GET_USER_PROFILE do |request|
       request.add_arg :userid, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
     end
@@ -18,7 +18,7 @@ module Dingtalk
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/602f4b15}
     # @!method get_userid_by_unionid(unionid:, access_token:)
     # @return [Hash]
-    add_request :get_userid_by_unionid, :get, Dingtalk::RequestUrl::GET_USERID_FROM_UNIONID  do |request|
+    add_request :get_userid_by_unionid, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_UNIONID  do |request|
       request.add_arg :unionid, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
     end
@@ -27,7 +27,7 @@ module Dingtalk
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/soV11}
     # @!method get_userid_by_mobile(mobile:, access_token:)
     # @return [Hash]
-    add_request :get_userid_by_mobile, :get, Dingtalk::RequestUrl::GET_USERID_FROM_MOBILE do |request|
+    add_request :get_userid_by_mobile, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_MOBILE do |request|
       request.add_arg :mobile, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
     end

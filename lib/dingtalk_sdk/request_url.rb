@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Dingtalk
+module DingtalkSdk
   module RequestUrl
     # 获取 AccessToken
     ACCESS_TOKEN = "https://oapi.dingtalk.com/gettoken"

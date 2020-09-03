@@ -3,9 +3,10 @@ require "httparty"
 require "active_support"
 require "active_support/core_ext/hash/keys"
 require "active_support/core_ext/hash/deep_merge"
-require "dingtalk"
 
-module Dingtalk
+require "dingtalk_sdk"
+
+module DingtalkSdk
   module Core
     class RequestBuilder
       attr_reader :query_args, :body_args, :query_const, :body_const, :required_args
@@ -64,7 +65,7 @@ module Dingtalk
         when :query
           @query_args << arg_name
         else
-          raise Dingtalk::Error.new("unknown argument '#{arg_name}' position")
+          raise DingtalkSdk::Error.new("unknown argument '#{arg_name}' position")
         end
 
         @required_args << arg_name if option[:required]
@@ -79,7 +80,7 @@ module Dingtalk
         when :query
           @query_const.merge! const_hash
         else
-          raise Dingtalk::Error.new("unknown argument '#{arg_name}' position")
+          raise DingtalkSdk::Error.new("unknown argument '#{arg_name}' position")
         end
       end
     end
@@ -91,7 +92,7 @@ module Dingtalk
       define_method request_name do |method_args = {}|
         request_options = {}.tap do |h|
           builder.required_args.each do |arg|
-            raise Dingtalk::Error.new("missing required argument '#{arg}' when invoke request #{request_name}") \
+            raise DingtalkSdk::Error.new("missing required argument '#{arg}' when invoke request #{request_name}") \
               if method_args[arg].nil?
           end
 
@@ -125,7 +126,7 @@ module Dingtalk
         symbolized_response = JSON.parse(response.body).deep_symbolize_keys
 
         if symbolized_response[:errcode] != 0
-          raise Dingtalk::RequestFailedError.new(
+          raise DingtalkSdk::RequestFailedError.new(
             code: symbolized_response[:errcode],
             message: symbolized_response[:errmsg],
           )

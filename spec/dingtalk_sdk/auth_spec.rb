@@ -3,10 +3,10 @@ require "uri"
 require "json"
 require "securerandom"
 
-require "dingtalk"
-require "dingtalk/auth"
+require "dingtalk_sdk"
+require "dingtalk_sdk/auth"
 
-RSpec.describe Dingtalk::Auth do
+RSpec.describe DingtalkSdk::Auth do
   before :each do
     @agent_id = "mocked_agent_id"
     @app_key = "mocked_app_key"
@@ -17,9 +17,9 @@ RSpec.describe Dingtalk::Auth do
     @int_login_code = "mocked_int_login_code"
     @timestamp = (Time.now.localtime("+08:00").to_f * 1000).to_i
 
-    @signature = Dingtalk.login_free_signature(@app_secret, timestamp: @timestamp)
+    @signature = DingtalkSdk.login_free_signature(@app_secret, timestamp: @timestamp)
 
-    @dingtalk_request = Dingtalk::Request.new(
+    @dingtalk_request = DingtalkSdk::Request.new(
       agent_id: @agent_id,
       app_key: @app_key,
       app_secret: @app_secret,
