@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dingtalk_sdk/core'
 require 'dingtalk_sdk/request_url'
 

@@ -1,10 +1,12 @@
-require "json"
-require "httparty"
-require "active_support"
-require "active_support/core_ext/hash/keys"
-require "active_support/core_ext/hash/deep_merge"
+# frozen_string_literal: true
 
-require "dingtalk_sdk"
+require 'json'
+require 'httparty'
+require 'active_support'
+require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/hash/deep_merge'
+
+require 'dingtalk_sdk'
 
 module DingtalkSdk
   module Core
@@ -22,41 +24,39 @@ module DingtalkSdk
         @query_const = {}
       end
 
-      def is_json?
+      def json?
         @format == :json
       end
 
-      def is_x_form?
+      def x_form?
         @format == :x_form
       end
 
-      def is_form_data?
+      def form_data?
         @format == :form_data
       end
 
-      def is_arg_required?(arg_name)
+      def arg_required?(arg_name)
         @required_args.include? arg_name
       end
 
-      def has_body?
+      def body?
         !@body_args.empty? || !@body_const.empty?
       end
 
-      def has_query?
+      def query?
         !@query_args.empty? || !@query_const.empty?
       end
 
-      def has_body_const?
+      def body_const?
         !@body_const.empty?
       end
 
-      def has_query_const?
+      def query_const?
         !@query_const.empty?
       end
 
-      def format=(format)
-        @format = format
-      end
+      attr_writer :format
 
       def add_arg(arg_name, option)
         case option[:in]
@@ -65,14 +65,14 @@ module DingtalkSdk
         when :query
           @query_args << arg_name
         else
-          raise DingtalkSdk::Error.new("unknown argument '#{arg_name}' position")
+          raise DingtalkSdk::Error, "unknown argument '#{arg_name}' position"
         end
 
         @required_args << arg_name if option[:required]
       end
 
       def add_const(arg_name, value, option)
-        const_hash = {arg_name => value}
+        const_hash = { arg_name => value }
 
         case option[:in]
         when :body
@@ -80,7 +80,7 @@ module DingtalkSdk
         when :query
           @query_const.merge! const_hash
         else
-          raise DingtalkSdk::Error.new("unknown argument '#{arg_name}' position")
+          raise DingtalkSdk::Error, "unknown argument '#{arg_name}' position"
         end
       end
     end
@@ -92,33 +92,34 @@ module DingtalkSdk
       define_method request_name do |method_args = {}|
         request_options = {}.tap do |h|
           builder.required_args.each do |arg|
-            raise DingtalkSdk::Error.new("missing required argument '#{arg}' when invoke request #{request_name}") \
+            raise DingtalkSdk::Error, "missing required argument '#{arg}' when invoke request #{request_name}" \
               if method_args[arg].nil?
           end
 
-          [:body, :query].each do |arg_pos|
-            h[arg_pos] = {} if builder.send(:"has_#{arg_pos}?")
+          %i[body query].each do |arg_pos|
+            h[arg_pos] = {} if builder.send(:"#{arg_pos}?")
 
             builder.send(:"#{arg_pos}_args").each do |arg_name|
               arg_value = method_args[arg_name]
               next if arg_pos == :query && arg_value.nil?
+
               h[arg_pos][arg_name] = arg_value
             end
 
             builder.send(:"#{arg_pos}_const").each do |arg_name, arg_value|
-              if arg_value.respond_to?(:call)
-                h[arg_pos][arg_name] = arg_value.call(self)
-              else
-                h[arg_pos][arg_name] = arg_value
-              end
+              h[arg_pos][arg_name] = if arg_value.respond_to?(:call)
+                                       arg_value.call(self)
+                                     else
+                                       arg_value
+                                     end
             end
           end
 
-          if builder.is_form_data?
+          if builder.form_data?
             h[:multipart] = true
-          elsif builder.is_json?
-            h[:body] = h[:body].to_json if Hash === h[:body]
-            h[:headers] = {:"Content-Type" => "application/json"}
+          elsif builder.json?
+            h[:body] = h[:body].to_json if h[:body].is_a?(Hash)
+            h[:headers] = { "Content-Type": 'application/json' }
           end
         end
 
@@ -128,7 +129,7 @@ module DingtalkSdk
         if symbolized_response[:errcode] != 0
           raise DingtalkSdk::RequestFailedError.new(
             code: symbolized_response[:errcode],
-            message: symbolized_response[:errmsg],
+            message: symbolized_response[:errmsg]
           )
         end
 

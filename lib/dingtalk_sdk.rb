@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'base64'
 require 'openssl'
 
-require "dingtalk_sdk/version"
-require "dingtalk_sdk/auth"
-require "dingtalk_sdk/user"
-require "dingtalk_sdk/department"
-require "dingtalk_sdk/access_token"
-require "dingtalk_sdk/corp_conversation"
+require 'dingtalk_sdk/version'
+require 'dingtalk_sdk/auth'
+require 'dingtalk_sdk/user'
+require 'dingtalk_sdk/department'
+require 'dingtalk_sdk/access_token'
+require 'dingtalk_sdk/corp_conversation'
 
 module DingtalkSdk
   class Error < StandardError; end
@@ -16,7 +18,8 @@ module DingtalkSdk
     attr_reader :code, :message
 
     def initialize(code:, message:)
-      @code, @message, = code, message
+      @code = code
+      @message = message
     end
   end
 
@@ -44,7 +47,9 @@ module DingtalkSdk
     attr_reader :agent_id, :app_key, :app_secret
 
     def initialize(agent_id:, app_key:, app_secret:)
-      @agent_id, @app_key, @app_secret = agent_id, app_key, app_secret
+      @agent_id = agent_id
+      @app_key = app_key
+      @app_secret = app_secret
     end
   end
 
@@ -56,18 +61,18 @@ module DingtalkSdk
     def login_free_signature(app_secret, options = {})
       default_options = {
         timestamp: nil,
-        url_encode: true,
+        url_encode: true
       }
 
       options = default_options.merge(options)
 
-      timestamp = unless options[:timestamp].nil?
-        options[:timestamp]
-      else
-        (Time.now.localtime("+08:00").to_f * 1000).to_i
-      end
+      timestamp = if options[:timestamp].nil?
+                    (Time.now.localtime('+08:00').to_f * 1000).to_i
+                  else
+                    options[:timestamp]
+                  end
 
-      signature_str = OpenSSL::HMAC.digest("SHA256", app_secret, timestamp.to_s)
+      signature_str = OpenSSL::HMAC.digest('SHA256', app_secret, timestamp.to_s)
       signature_str_base64 = Base64.encode64(signature_str).strip
 
       Signature.new(signature_str_base64)

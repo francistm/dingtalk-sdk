@@ -1,5 +1,7 @@
-require "dingtalk_sdk/core"
-require "dingtalk_sdk/request_url"
+# frozen_string_literal: true
+
+require 'dingtalk_sdk/core'
+require 'dingtalk_sdk/request_url'
 
 module DingtalkSdk
   module Department

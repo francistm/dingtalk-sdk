@@ -1,6 +1,8 @@
-require "dingtalk_sdk/core"
-require "dingtalk_sdk/request_url"
-require "active_support/core_ext/object/to_query"
+# frozen_string_literal: true
+
+require 'dingtalk_sdk/core'
+require 'dingtalk_sdk/request_url'
+require 'active_support/core_ext/object/to_query'
 
 module DingtalkSdk
   module Auth
@@ -17,11 +19,11 @@ module DingtalkSdk
 
     # 生成扫码登录跳转地址
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/kymkv6}
-    def get_qr_connect_uri(redirect_uri, state = "")
+    def get_qr_connect_uri(redirect_uri, state = '')
       qs = {}.tap do |h|
         h[:appid] = @app_key
-        h[:response_type] = "code"
-        h[:scope] = "snsapi_login"
+        h[:response_type] = 'code'
+        h[:scope] = 'snsapi_login'
         h[:state] = state
         h[:redirect_uri] = redirect_uri
       end

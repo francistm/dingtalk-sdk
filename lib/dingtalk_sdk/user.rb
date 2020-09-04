@@ -1,5 +1,7 @@
-require "dingtalk_sdk/core"
-require "dingtalk_sdk/request_url"
+# frozen_string_literal: true
+
+require 'dingtalk_sdk/core'
+require 'dingtalk_sdk/request_url'
 
 module DingtalkSdk
   module User
@@ -18,7 +20,7 @@ module DingtalkSdk
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/602f4b15}
     # @!method get_userid_by_unionid(unionid:, access_token:)
     # @return [Hash]
-    add_request :get_userid_by_unionid, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_UNIONID  do |request|
+    add_request :get_userid_by_unionid, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_UNIONID do |request|
       request.add_arg :unionid, required: true, in: :query
       request.add_arg :access_token, required: true, in: :query
     end
