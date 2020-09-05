@@ -47,7 +47,7 @@ RSpec.describe DingtalkSdk::Auth do
       }
     end
 
-    stub_request(:get, %r{oapi.dingtalk.com/user/getuserinfo})
+    stub_request(:get, %r{oapi\.dingtalk\.com/user/getuserinfo})
       .with(
         query: {
           code: @int_login_code,
@@ -56,7 +56,7 @@ RSpec.describe DingtalkSdk::Auth do
       )
       .to_return(status: 200, body: get_user_info_response_body.to_json)
 
-    stub_request(:post, %r{oapi.dingtalk.com/sns/getuserinfo_bycode})
+    stub_request(:post, %r{oapi\.dingtalk\.com/sns/getuserinfo_bycode})
       .with(
         query: {
           accessKey: @app_key,

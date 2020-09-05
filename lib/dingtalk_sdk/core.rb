@@ -85,6 +85,8 @@ module DingtalkSdk
       end
     end
 
+    protected
+
     def add_request(request_name, method, url)
       builder = RequestBuilder.new
       yield builder if block_given?
