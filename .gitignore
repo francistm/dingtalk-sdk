@@ -12,4 +12,5 @@
 
 .idea
 *.iml
+*.gem
 Gemfile.lock
