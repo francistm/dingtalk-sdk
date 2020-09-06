@@ -29,9 +29,8 @@ module DingtalkSdk
     add_request :get_corp_conversation_progress, :post, DingtalkSdk::RequestUrl::CORP_CONVERSATION_SEND_PROGRESS do |request|
       request.add_arg :task_id, in: :body, required: true
 
-      request.add_arg :access_token, in: :query, required: true
-
       request.add_const :agent_id, ->(r) { r.agent_id }, in: :body
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 查询工作通知消息的发送结果
@@ -41,9 +40,8 @@ module DingtalkSdk
     add_request :get_corp_conversation_result, :post, DingtalkSdk::RequestUrl::CORP_CONVERSATION_SEND_RESULT do |request|
       request.add_arg :task_id, in: :body, required: true
 
-      request.add_arg :access_token, in: :query, required: true
-
       request.add_const :agent_id, ->(r) { r.agent_id }, in: :body
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 工作通知消息撤回
@@ -53,9 +51,8 @@ module DingtalkSdk
     add_request :recall_corp_conversation, :post, DingtalkSdk::RequestUrl::RECALL_CORP_CONVERSATION do |request|
       request.add_arg :msg_task_id, in: :body, required: true
 
-      request.add_arg :access_token, in: :query, required: true
-
       request.add_const :agent_id, ->(r) { r.agent_id }, in: :body
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
   end
 end

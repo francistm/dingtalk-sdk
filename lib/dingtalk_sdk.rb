@@ -24,8 +24,8 @@ module DingtalkSdk
   end
 
   class Signature
-    def initialize(s)
-      @signature = s
+    def initialize(signature)
+      @signature = signature
     end
 
     def to_s

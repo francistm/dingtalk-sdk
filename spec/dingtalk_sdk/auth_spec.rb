@@ -19,6 +19,10 @@ RSpec.describe DingtalkSdk::Auth do
     @int_login_code = 'mocked_int_login_code'
     @timestamp = (Time.now.localtime('+08:00').to_f * 1000).to_i
 
+    DingtalkSdk::Request.set_access_token_cache_method do
+      @access_token
+    end
+
     @signature = DingtalkSdk.login_free_signature(@app_secret, timestamp: @timestamp)
 
     @dingtalk_request = DingtalkSdk::Request.new(
@@ -47,7 +51,7 @@ RSpec.describe DingtalkSdk::Auth do
       }
     end
 
-    stub_request(:get, %r{oapi\.dingtalk\.com/user/getuserinfo})
+    stub_request(:get, %r{oapi.dingtalk.com/user/getuserinfo})
       .with(
         query: {
           code: @int_login_code,
@@ -56,7 +60,7 @@ RSpec.describe DingtalkSdk::Auth do
       )
       .to_return(status: 200, body: get_user_info_response_body.to_json)
 
-    stub_request(:post, %r{oapi\.dingtalk\.com/sns/getuserinfo_bycode})
+    stub_request(:post, %r{oapi.dingtalk.com/sns/getuserinfo_bycode})
       .with(
         query: {
           accessKey: @app_key,
@@ -70,10 +74,7 @@ RSpec.describe DingtalkSdk::Auth do
   end
 
   it 'should get user id in internal app login-free scenario' do
-    response = @dingtalk_request.get_int_login_free_user_id(
-      code: @int_login_code,
-      access_token: @access_token
-    )
+    response = @dingtalk_request.get_int_login_free_user_id(code: @int_login_code)
 
     expect(response[:userid]).to eq(@int_user_id)
     expect(response[:is_sys]).to eq(false)

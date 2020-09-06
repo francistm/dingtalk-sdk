@@ -14,7 +14,7 @@ module DingtalkSdk
     add_request :get_department_list, :get, DingtalkSdk::RequestUrl::GET_DEPARTMENT_LIST do |request|
       request.add_arg :id, in: :query           # 父部门id（如果不传，默认部门为根部门，根部门ID为1）
       request.add_arg :fetch_child, in: :query  # 是否递归部门的全部子部门
-      request.add_arg :access_token, required: true, in: :query
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 获取部门详情
@@ -23,7 +23,7 @@ module DingtalkSdk
     # @return [Hash]
     add_request :get_department_profile, :get, DingtalkSdk::RequestUrl::GET_DEPARTMENT_PROFILE do |request|
       request.add_arg :id, in: :query, required: true
-      request.add_arg :access_token, in: :query, required: true
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
   end
 end

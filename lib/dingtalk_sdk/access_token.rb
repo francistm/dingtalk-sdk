@@ -17,27 +17,26 @@ module DingtalkSdk
     end
 
     # 获取缓存的 access_token
+    # 如果未设置 会自动调用 get_access_token 获取一个新的 access_token
     # 通过 Request.set_access_token_cache_method 定义缓存方法
     # @return [Hash]
     def cached_access_token
       method_name = :@@ak_cache_method
 
-      unless self.class.class_variable_defined? method_name
-        raise DingtalkSdk::Error, 'access_token cache method not found'
-      end
+      return get_access_token unless self.class.class_variable_defined? method_name
 
-      self.class.class_variable_get(method_name).call(agent_id, app_key, app_secret)
+      self.class.class_variable_get(method_name).call(self)
     end
 
     module ClassMethods
       def set_access_token_cache_method
         raise ArgumentError, 'invalid access_token cache method' unless block_given?
 
-        class_variable_set :@@ak_cache_method, ->(agent_id, app_key, app_secret) { yield(agent_id, app_key, app_secret) }
+        class_variable_set :@@ak_cache_method, ->(request) { yield request }
       end
 
       def unset_access_token_cache_method
-        remove_class_variable :@@ak_cache_method if class_variable_defined?(AK_CACHE_METHOD_NAME)
+        remove_class_variable :@@ak_cache_method if class_variable_defined?(@@ak_cache_method)
       end
     end
 

@@ -13,8 +13,9 @@ module DingtalkSdk
     # @return [Hash]
     add_request :upload_media, :post, DingtalkSdk::RequestUrl::UPLOAD_MEDIA_FILE do |request|
       request.add_arg :type, in: query, required: true
-      request.add_arg :access_token, in: :query, required: true
       request.add_arg :media, in: :body, required: true
+
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
   end
 end

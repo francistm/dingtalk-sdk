@@ -13,7 +13,7 @@ module DingtalkSdk
     # @return [Hash]
     add_request :get_user_profile, :get, DingtalkSdk::RequestUrl::GET_USER_PROFILE do |request|
       request.add_arg :userid, required: true, in: :query
-      request.add_arg :access_token, required: true, in: :query
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 根据 unionId 获取 userId
@@ -22,7 +22,7 @@ module DingtalkSdk
     # @return [Hash]
     add_request :get_userid_by_unionid, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_UNIONID do |request|
       request.add_arg :unionid, required: true, in: :query
-      request.add_arg :access_token, required: true, in: :query
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 根据手机号获取 userId
@@ -31,7 +31,7 @@ module DingtalkSdk
     # @return [Hash]
     add_request :get_userid_by_mobile, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_MOBILE do |request|
       request.add_arg :mobile, required: true, in: :query
-      request.add_arg :access_token, required: true, in: :query
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
   end
 end
