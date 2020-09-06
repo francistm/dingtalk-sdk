@@ -9,7 +9,7 @@ module DingtalkSdk
 
     # 获取用户详情
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/AaRQe}
-    # @!method get_user_profile(userid:, access_token:)
+    # @!method get_user_profile(userid:)
     # @return [Hash]
     add_request :get_user_profile, :get, DingtalkSdk::RequestUrl::GET_USER_PROFILE do |request|
       request.add_arg :userid, required: true, in: :query
@@ -18,7 +18,7 @@ module DingtalkSdk
 
     # 根据 unionId 获取 userId
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/602f4b15}
-    # @!method get_userid_by_unionid(unionid:, access_token:)
+    # @!method get_userid_by_unionid(unionid:)
     # @return [Hash]
     add_request :get_userid_by_unionid, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_UNIONID do |request|
       request.add_arg :unionid, required: true, in: :query
@@ -27,7 +27,7 @@ module DingtalkSdk
 
     # 根据手机号获取 userId
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/ege851/soV11}
-    # @!method get_userid_by_mobile(mobile:, access_token:)
+    # @!method get_userid_by_mobile(mobile:)
     # @return [Hash]
     add_request :get_userid_by_mobile, :get, DingtalkSdk::RequestUrl::GET_USERID_FROM_MOBILE do |request|
       request.add_arg :mobile, required: true, in: :query

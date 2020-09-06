@@ -9,7 +9,7 @@ module DingtalkSdk
 
     # 获取部门列表
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/dubakq/e6e1604e}
-    # @!method get_department_list(id:, fetch_child:, access_token:)
+    # @!method get_department_list(id:, fetch_child:)
     # @return [Hash]
     add_request :get_department_list, :get, DingtalkSdk::RequestUrl::GET_DEPARTMENT_LIST do |request|
       request.add_arg :id, in: :query           # 父部门id（如果不传，默认部门为根部门，根部门ID为1）
@@ -19,7 +19,7 @@ module DingtalkSdk
 
     # 获取部门详情
     # {https://ding-doc.dingtalk.com/doc#/serverapi2/dubakq/5bf960de}
-    # @!method get_department_profile(id:, access_token:)
+    # @!method get_department_profile(id:)
     # @return [Hash]
     add_request :get_department_profile, :get, DingtalkSdk::RequestUrl::GET_DEPARTMENT_PROFILE do |request|
       request.add_arg :id, in: :query, required: true
