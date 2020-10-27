@@ -11,7 +11,9 @@ require 'dingtalk_sdk'
 module DingtalkSdk
   module Core
     class RequestBuilder
-      attr_reader :query_args, :body_args, :query_const, :body_const, :required_args
+      attr_reader :query_args, :body_args, \
+                  :query_const, :body_const, \
+                  :required_args, :allow_nil_args
 
       def initialize
         @format = nil
@@ -19,6 +21,7 @@ module DingtalkSdk
         @body_args = []
         @query_args = []
         @required_args = []
+        @allow_nil_args = []
 
         @body_const = {}
         @query_const = {}
@@ -69,6 +72,7 @@ module DingtalkSdk
         end
 
         @required_args << arg_name if option[:required]
+        @allow_nil_args << arg_name if option[:allow_nil]
       end
 
       def add_const(arg_name, value, option)
@@ -103,9 +107,11 @@ module DingtalkSdk
 
             builder.send(:"#{arg_pos}_args").each do |arg_name|
               arg_value = method_args[arg_name]
-              next if arg_pos == :query && arg_value.nil?
-
-              h[arg_pos][arg_name] = arg_value
+              if arg_value.nil?
+                h[arg_pos][arg_name] = arg_value if builder.allow_nil_args.include?(arg_name)
+              else
+                h[arg_pos][arg_name] = arg_value
+              end
             end
 
             builder.send(:"#{arg_pos}_const").each do |arg_name, arg_value|
