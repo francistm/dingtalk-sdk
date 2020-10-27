@@ -17,9 +17,8 @@ module DingtalkSdk
       request.add_arg :to_all_user, in: :body
       request.add_arg :msg, in: :body
 
-      request.add_arg :access_token, in: :query, required: true
-
       request.add_const :agent_id, ->(r) { r.agent_id }, in: :body
+      request.add_const :access_token, ->(r) { r.cached_access_token }, in: :query
     end
 
     # 查询工作通知消息的发送进度
