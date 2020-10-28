@@ -73,7 +73,7 @@ module DingtalkSdk
                   end
 
       signature_str = OpenSSL::HMAC.digest('SHA256', app_secret, timestamp.to_s)
-      signature_str_base64 = Base64.encode64(signature_str).strip
+      signature_str_base64 = Base64.strict_encode64(signature_str)
 
       Signature.new(signature_str_base64)
     end
