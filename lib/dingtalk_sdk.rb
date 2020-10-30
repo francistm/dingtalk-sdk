@@ -25,8 +25,14 @@ module DingtalkSdk
   end
 
   class Signature
-    def initialize(signature)
-      @signature = signature
+    def initialize(signature, url_encoded = false)
+      if url_encoded
+        @signature = URI.decode_www_form_component signature
+        @encoded_signature = signature
+      else
+        @signature = signature
+        @encoded_signature = URI.encode_www_form_component signature
+      end
     end
 
     def to_s
@@ -34,7 +40,7 @@ module DingtalkSdk
     end
 
     def url_encoded
-      URI.encode_www_form_component @signature
+      @encoded_signature
     end
   end
 

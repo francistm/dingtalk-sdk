@@ -21,22 +21,23 @@ module DingtalkSdk
     # 通过 Request.set_access_token_cache_method 定义缓存方法
     # @return [Hash]
     def cached_access_token
-      method_name = :@@ak_cache_method
+      var_name = :@ak_cache_method
 
-      return get_access_token unless self.class.class_variable_defined? method_name
+      return get_access_token unless self.class.instance_variable_defined?(var_name)
 
-      self.class.class_variable_get(method_name).call(self)
+      self.class.instance_variable_get(var_name).call(self)
     end
 
     module ClassMethods
       def set_access_token_cache_method
         raise ArgumentError, 'invalid access_token cache method' unless block_given?
 
-        class_variable_set :@@ak_cache_method, ->(request) { yield request }
+        @ak_cache_method = ->(request) { yield request }
       end
 
       def unset_access_token_cache_method
-        remove_class_variable :@@ak_cache_method if class_variable_defined?(@@ak_cache_method)
+        var_name = :@ak_cache_method
+        remove_instance_variable(var_name) if instance_variable_defined?(var_name)
       end
     end
 

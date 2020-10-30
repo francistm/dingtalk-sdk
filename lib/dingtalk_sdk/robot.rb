@@ -8,26 +8,49 @@ require 'dingtalk_sdk/core'
 require 'dingtalk_sdk/request_url'
 require 'active_support/core_ext/object'
 require 'active_support/core_ext/integer'
-require 'active_support/core_ext/time/zones'
 
 module DingtalkSdk
   module Robot
     extend DingtalkSdk::Core
 
-    def self.calculate_signature(secret, timestamp)
-      raise ArgumentError, 'timestamp must in millis' if Math.log10(timestamp).ceil < 13
+    class << self
+      # 计算签名
+      # timestamp 为毫秒单位
+      # @return [DingtalkSdk::Signature]
+      def calculate_signature(secret, timestamp)
+        raise ArgumentError, 'timestamp must in millis' if Math.log10(timestamp).ceil < 13
 
-      origin_str = [timestamp, secret].join("\n")
-      signature_str = OpenSSL::HMAC.digest('SHA256', secret, origin_str)
-      signature_str_base64 = Base64.strict_encode64(signature_str)
+        origin_str = [timestamp, secret].join("\n")
+        signature_str = OpenSSL::HMAC.digest('SHA256', secret, origin_str)
+        signature_str_base64 = Base64.strict_encode64(signature_str)
 
-      Signature.new(signature_str_base64)
-    end
+        Signature.new(signature_str_base64)
+      end
 
-    def self.verify_signature(secret, signature, timestamp = Time.zone.now)
-      return false if Time.zone.now - timestamp > 1.hour
+      # 验证一个签名是否有效
+      # @option timestamp 时间戳
+      # @option url_encoded 签名是否经过 url encode
+      # @option verify_timestamp 验证签名是否在有效时间段内 （1小时)
+      # @return [Boolean]
+      def verify_signature(secret, expected_signature, options = {})
+        options.with_defaults!(
+          timestamp: Time.now.to_i * 1000,
+          url_encoded: false,
+          verify_timestamp: true
+        )
 
-      calculate_signature(secret, timestamp.to_i * 1000) == signature
+        if options[:verify_signature]
+          datetime_timestamp = Time.at(options[:timestamp] / 1000)
+          return false if Time.now - datetime_timestamp > 1.hour
+        end
+
+        actually_signature = calculate_signature(secret, options[:timestamp])
+        expected_signature == if options[:url_encoded]
+                                actually_signature.url_encoded
+                              else
+                                actually_signature.to_s
+                              end
+      end
     end
 
     class MessageBuilder
@@ -96,7 +119,7 @@ module DingtalkSdk
 
       def at_mobile(mobile)
         @is_at_all = false
-        @at_mobile_list = [*mobile]
+        @at_mobile_list = [*mobile].map(&:to_s).uniq
       end
 
       def at_all
@@ -110,7 +133,7 @@ module DingtalkSdk
 
           if @is_at_all
             h[:isAtAll] = true
-          elsif @at_mobile_list.try(:size).positive?
+          elsif @at_mobile_list.try(:size).try(:positive?)
             h[:atMobiles] = @at_mobile_list
           end
         end
