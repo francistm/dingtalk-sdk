@@ -41,13 +41,23 @@ RSpec.describe DingtalkSdk::Robot do
       expect(mesg_h[:at]).to be_nil
     end
 
+    it 'should compose message with at all' do
+      builder = DingtalkSdk::Robot::MessageBuilder.new
+      builder.text text: 'hello world'
+      builder.at_all
+      mesg_h = builder.to_h
+
+      expect(mesg_h[:at][:isAtAll]).to be_truthy
+      expect(mesg_h[:at][:atMobiles]).to be_nil
+    end
+
     it 'should compose message with at mobiles' do
       builder = DingtalkSdk::Robot::MessageBuilder.new
       builder.text text: 'hello world'
       builder.at_mobiles [123, 456]
       mesg_h = builder.to_h
 
-      expect(mesg_h[:at][:isAtAll]).to be_nil
+      expect(mesg_h[:at][:isAtAll]).to be_falsey
       expect(mesg_h[:at][:atMobiles]).to eq(%w[123 456])
     end
   end
