@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'base64'
 require 'openssl'
 require 'dingtalk_sdk'
@@ -117,9 +116,9 @@ module DingtalkSdk
         }
       end
 
-      def at_mobile(mobile)
+      def at_mobiles(mobiles)
         @is_at_all = false
-        @at_mobile_list = [*mobile].map(&:to_s).uniq
+        @at_mobile_list = [*mobiles].map(&:to_s).uniq
       end
 
       def at_all
@@ -132,15 +131,11 @@ module DingtalkSdk
           h.merge! @mesg
 
           if @is_at_all
-            h[:isAtAll] = true
+            h[:at] = { isAtAll: true }
           elsif @at_mobile_list.try(:size).try(:positive?)
-            h[:atMobiles] = @at_mobile_list
+            h[:at] = { isAtAll: false, atMobiles: @at_mobile_list }
           end
         end
-      end
-
-      def to_json(*_args)
-        JSON.generate to_h
       end
     end
   end
