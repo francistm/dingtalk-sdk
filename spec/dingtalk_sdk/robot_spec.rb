@@ -5,7 +5,7 @@ require 'dingtalk_sdk/robot'
 
 RSpec.describe DingtalkSdk::Robot do
   it 'should calculate correct signature' do
-    timestamp = 1_603_868_410
+    timestamp = 1_603_868_410_000
     secret = 'this is secret'
     sign = DingtalkSdk::Robot.calculate_signature(secret, timestamp)
 
